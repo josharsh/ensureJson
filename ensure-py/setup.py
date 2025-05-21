@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="ensure-py",
-    version="0.1.0",
+    version="0.1.1",
     description="A <3kB, dependency-free toolkit to repair 'almost-JSON' text from LLMs and return a valid Python object—or raise JsonFixError.",
     author="",
     license="MIT",
