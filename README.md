@@ -1,6 +1,6 @@
 # ensureJson
 
-[![PyPI version](https://img.shields.io/pypi/v/ensure-py.svg?label=ensure-py)](https://pypi.org/project/ensure-py/)
+[![PyPI version](https://img.shields.io/pypi/v/ensure-json.svg?label=ensure-json)](https://pypi.org/project/ensure-json/)
 [![npm version](https://img.shields.io/npm/v/ensure-json.svg?label=ensure-json)](https://www.npmjs.com/package/ensure-json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -29,10 +29,10 @@ LLMs often output JSON-like text that isn't quite valid JSON (extra commas, unqu
 
 ### Python
 
-[ensure-py on PyPI](https://pypi.org/project/ensure-py/)
+[ensure-json on PyPI](https://pypi.org/project/ensure-json/)
 
 ```bash
-pip install ensure-py
+pip install ensure-json
 ```
 
 ### JavaScript / TypeScript
@@ -69,7 +69,7 @@ except JsonFixError as err:
 echo '{ name: "Alice", age: 42, }' | ensure-json
 ```
 
-See more: [ensure-py on PyPI](https://pypi.org/project/ensure-py/)
+See more: [ensure-json on PyPI](https://pypi.org/project/ensure-json/)
 
 ---
 
@@ -99,7 +99,7 @@ See more: [ensure-json on npm](https://www.npmjs.com/package/ensure-json)
 ```
 ensureJson/
 ├── ensure-js/      # JavaScript/TypeScript package
-├── ensure-py/      # Python package
+├── ensure-py/      # Python package (published as ensure-json)
 ├── README.md       # (this file)
 └── ...             # configs, scripts, etc.
 ```

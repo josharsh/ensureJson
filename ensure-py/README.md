@@ -6,6 +6,8 @@ Repair and parse "almost-JSON" from LLMs (like GPT, Claude) into valid Python ob
 
 ## Install
 
+[ensure-json on PyPI](https://pypi.org/project/ensure-json/)
+
 ```bash
 pip install ensure-json
 ```
