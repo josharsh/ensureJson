@@ -1,6 +1,6 @@
 {
-  "name": "ensureJSON",
-  "version": "0.1.0",
+  "name": "ensure-json",
+  "version": "0.1.1",
   "description": "A <3kB, dependency-free helper that repairs 'almost-JSON' text from LLMs and returns a valid JavaScript object—or throws JsonFixError.",
   "type": "module",
   "exports": {
