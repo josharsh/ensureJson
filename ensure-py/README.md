@@ -1,4 +1,4 @@
-# ensure-py
+# ensure-json
 
 Repair and parse "almost-JSON" from LLMs (like GPT, Claude) into valid Python objects, or raise a clear error. Works in any Python 3.7+ environment. Zero dependencies (Pydantic optional for schema validation).
 
@@ -7,7 +7,7 @@ Repair and parse "almost-JSON" from LLMs (like GPT, Claude) into valid Python ob
 ## Install
 
 ```bash
-pip install ensure-py
+pip install ensure-json
 ```
 
 ---
