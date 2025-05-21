@@ -1,4 +1,4 @@
-# ensureJson Project
+# ensureJson
 
 A cross-language toolkit to repair and parse "almost-JSON" text from LLMs (e.g., GPT, Claude) and return a valid object in JavaScript or Python. This monorepo contains both a TypeScript/JavaScript package (`ensure-js`) and a Python package (`ensure-py`), each with a minimal CLI and API.
 
