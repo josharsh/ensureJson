@@ -1,0 +1,46 @@
+{
+  "name": "ensureJSON",
+  "version": "0.1.0",
+  "description": "A <3kB, dependency-free helper that repairs 'almost-JSON' text from LLMs and returns a valid JavaScript object—or throws JsonFixError.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "bin": {
+    "json-fix": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts && tsup src/cli.ts --format esm",
+    "prepublishOnly": "pnpm run build",
+    "lint": "biome check ."
+  },
+  "keywords": [
+    "llm",
+    "gpt",
+    "json",
+    "repair",
+    "openai",
+    "anthropic",
+    "edge"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "biome": "^0.3.3",
+    "@types/node": "^20.0.0"
+  },
+  "dependencies": {
+    "zod": "^3.22.0"
+  }
+}

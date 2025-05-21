@@ -1,0 +1,44 @@
+# Node
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TypeScript
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Test output
+coverage/
+*.log
+
+# Project-specific
+LLMs.txt
+
+# Python (ensure-py)
+ensure-py/venv/
+ensure-py/__pycache__/
+ensure-py/*.pyc
+ensure-py/*.egg-info/
+ensure-py/.pytest_cache/
+ensure-py/.mypy_cache/
+ensure-py/.DS_Store
+ensure-py/test/__pycache__/
+ensure-py/test/*.pyc
