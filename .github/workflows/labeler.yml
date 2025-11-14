@@ -1,0 +1,166 @@
+name: Labeler
+
+on:
+  issues:
+    types: [opened, edited]
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  label-issues:
+    name: Auto-label Issues
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+    - name: Label Python-related issues
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue || context.payload.pull_request;
+          const body = (issue.body || '').toLowerCase();
+          const title = (issue.title || '').toLowerCase();
+          const labels = [];
+
+          // Package-specific labels
+          if (body.includes('python') || body.includes('pip') || body.includes('ensure_json')) {
+            labels.push('python');
+          }
+          if (body.includes('javascript') || body.includes('typescript') || body.includes('npm') || body.includes('node')) {
+            labels.push('javascript');
+          }
+
+          // Type labels
+          if (title.includes('[bug]') || body.includes('bug') || body.includes('error')) {
+            labels.push('bug');
+          }
+          if (title.includes('[feature]') || body.includes('feature request')) {
+            labels.push('enhancement');
+          }
+          if (title.includes('[docs]') || body.includes('documentation')) {
+            labels.push('documentation');
+          }
+
+          // Add labels
+          if (labels.length > 0) {
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: labels
+            });
+          }
+
+  label-pr-size:
+    name: Label PR Size
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Calculate PR size and label
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const pr = context.payload.pull_request;
+
+          // Get PR file changes
+          const files = await github.rest.pulls.listFiles({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: pr.number
+          });
+
+          // Calculate total changes
+          const totalChanges = files.data.reduce((sum, file) => {
+            return sum + file.additions + file.deletions;
+          }, 0);
+
+          // Determine size label
+          let sizeLabel;
+          if (totalChanges < 10) {
+            sizeLabel = 'size/XS';
+          } else if (totalChanges < 50) {
+            sizeLabel = 'size/S';
+          } else if (totalChanges < 200) {
+            sizeLabel = 'size/M';
+          } else if (totalChanges < 500) {
+            sizeLabel = 'size/L';
+          } else {
+            sizeLabel = 'size/XL';
+          }
+
+          // Remove old size labels
+          const currentLabels = pr.labels.map(l => l.name);
+          const sizeLabels = currentLabels.filter(l => l.startsWith('size/'));
+
+          for (const label of sizeLabels) {
+            await github.rest.issues.removeLabel({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              name: label
+            });
+          }
+
+          // Add new size label
+          await github.rest.issues.addLabels({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: pr.number,
+            labels: [sizeLabel]
+          });
+
+  welcome-first-time-contributors:
+    name: Welcome First-Time Contributors
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+
+    steps:
+    - name: Welcome message
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue || context.payload.pull_request;
+          const isIssue = !!context.payload.issue;
+
+          // Check if this is the user's first contribution
+          const creator = issue.user.login;
+
+          const contributions = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            creator: creator,
+            state: 'all'
+          });
+
+          if (contributions.data.length === 1) {
+            // This is their first contribution!
+            const message = isIssue
+              ? `👋 Welcome to ensureJson, @${creator}! Thanks for opening your first issue. We'll review it soon.\n\nIf you're interested in contributing, check out our [Good First Issues](https://github.com/josharsh/ensureJson/labels/good%20first%20issue)!`
+              : `🎉 Congratulations on your first pull request, @${creator}! Thank you for contributing to ensureJson.\n\nA maintainer will review your PR soon. In the meantime, please make sure:\n- [ ] Tests pass\n- [ ] Documentation is updated\n- [ ] CHANGELOG.md is updated (if applicable)`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              body: message
+            });
+
+            // Add first-time contributor label
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.number,
+              labels: ['first-time-contributor']
+            });
+          }

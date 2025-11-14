@@ -1,0 +1,136 @@
+name: Good First Issue
+description: Beginner-friendly task for new contributors
+title: "[Good First Issue]: "
+labels: ["good first issue", "help wanted", "beginner-friendly"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Welcome! This template is for creating beginner-friendly issues.
+
+        If you're new to open source, this is a great place to start! We're here to help.
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Task Category
+      description: What type of task is this?
+      options:
+        - Documentation
+        - Testing
+        - Code Quality
+        - Examples
+        - Bug Fix (Simple)
+        - Feature (Small)
+        - Tooling/Infrastructure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package/Area
+      description: Which part of the project does this involve?
+      options:
+        - ensure-json (Python)
+        - ensure-json (JavaScript/TypeScript)
+        - Documentation
+        - CI/CD
+        - Project Infrastructure
+        - Examples
+        - Tests
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: What needs to be done?
+      placeholder: |
+        This task involves...
+        It's a good first issue because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance Criteria
+      description: How do we know when this is done?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Tests pass
+        - [ ] Documentation updated
+    validations:
+      required: true
+
+  - type: textarea
+    id: guidance
+    attributes:
+      label: Implementation Guidance
+      description: Provide hints or guidance for new contributors.
+      placeholder: |
+        To complete this task:
+        1. Look at file X
+        2. Modify function Y
+        3. Add a test in Z
+
+        Need help? Just ask in the comments!
+    validations:
+      required: false
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Helpful Resources
+      description: Links to documentation, examples, or related issues.
+      placeholder: |
+        - [Related documentation](link)
+        - [Example PR](link)
+        - [Tutorial](link)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: difficulty
+    attributes:
+      label: Estimated Difficulty
+      description: How difficult is this task?
+      options:
+        - Very Easy (< 30 minutes)
+        - Easy (30 minutes - 2 hours)
+        - Medium (2-4 hours)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: skills
+    attributes:
+      label: Skills Required
+      description: What skills are needed?
+      multiple: true
+      options:
+        - Python
+        - JavaScript/TypeScript
+        - Markdown
+        - Git/GitHub
+        - Testing
+        - Documentation
+        - No coding required
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: mentor
+    attributes:
+      label: Mentorship
+      description: Support available for this issue
+      options:
+        - label: A maintainer will provide guidance and code review
+          required: false
+        - label: This issue has detailed instructions for first-time contributors
+          required: false
+        - label: Questions are welcome - just comment below!
+          required: false

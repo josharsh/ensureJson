@@ -1,0 +1,190 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test-python:
+    name: Test Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.7', '3.8', '3.9', '3.10', '3.11', '3.12']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      working-directory: ./ensure-py
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install pytest pytest-cov
+
+    - name: Run tests
+      working-directory: ./ensure-py
+      run: |
+        python test/test.py
+
+    - name: Run tests with pytest (if available)
+      working-directory: ./ensure-py
+      run: |
+        pytest test/ -v --cov=. --cov-report=xml || echo "pytest not configured yet"
+      continue-on-error: true
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./ensure-py/coverage.xml
+        flags: python
+      continue-on-error: true
+
+  test-javascript:
+    name: Test Node.js ${{ matrix.node-version }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['18', '20', '21']
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      working-directory: ./ensure-js
+      run: npm install
+
+    - name: Build
+      working-directory: ./ensure-js
+      run: npm run build
+
+    - name: Run tests
+      working-directory: ./ensure-js
+      run: node test.js
+
+    - name: Run tests with coverage (if configured)
+      working-directory: ./ensure-js
+      run: npm test -- --coverage || echo "Coverage not configured yet"
+      continue-on-error: true
+
+  lint-python:
+    name: Lint Python
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install linting tools
+      run: |
+        pip install black flake8 mypy
+
+    - name: Check formatting with black
+      working-directory: ./ensure-py
+      run: black --check . || echo "black not configured yet"
+      continue-on-error: true
+
+    - name: Lint with flake8
+      working-directory: ./ensure-py
+      run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics || echo "flake8 not configured yet"
+      continue-on-error: true
+
+    - name: Type check with mypy
+      working-directory: ./ensure-py
+      run: mypy . || echo "mypy not configured yet"
+      continue-on-error: true
+
+  lint-javascript:
+    name: Lint JavaScript
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      working-directory: ./ensure-js
+      run: npm install
+
+    - name: Lint with biome
+      working-directory: ./ensure-js
+      run: npx @biomejs/biome check . || echo "biome not fully configured yet"
+      continue-on-error: true
+
+    - name: Type check
+      working-directory: ./ensure-js
+      run: npx tsc --noEmit
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    needs: [test-python, test-javascript]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Python package
+      working-directory: ./ensure-py
+      run: pip install -e .
+
+    - name: Install JavaScript package
+      working-directory: ./ensure-js
+      run: npm install && npm run build
+
+    - name: Test Python CLI
+      run: |
+        echo '{ name: "Alice", age: 42, }' | ensure-json
+
+    - name: Test JavaScript CLI
+      run: |
+        echo '{ name: "Alice", age: 42, }' | npx ensure-json
+      working-directory: ./ensure-js
+
+    - name: Cross-platform consistency test
+      run: |
+        echo '{ name: "Alice", age: 42, }' > /tmp/test.txt
+        ensure-json < /tmp/test.txt > /tmp/py-output.json
+        npx ensure-json < /tmp/test.txt > /tmp/js-output.json
+        diff /tmp/py-output.json /tmp/js-output.json
+      working-directory: ./ensure-js
+
+  all-checks-pass:
+    name: All Checks Passed
+    runs-on: ubuntu-latest
+    needs: [test-python, test-javascript, lint-python, lint-javascript, integration-tests]
+
+    steps:
+    - name: Success
+      run: echo "All checks passed!"

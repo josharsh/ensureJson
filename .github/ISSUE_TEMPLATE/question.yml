@@ -1,0 +1,75 @@
+name: Question or Help
+description: Ask a question or get help using ensureJson
+title: "[Question]: "
+labels: ["question", "help wanted"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question? We're here to help!
+
+        **Note:** For general discussions, consider using [GitHub Discussions](../../discussions) instead.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package is your question about?
+      options:
+        - ensure-json (Python)
+        - ensure-json (JavaScript/TypeScript)
+        - Both
+        - General question
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What would you like to know?
+      placeholder: How do I...?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What are you trying to accomplish? What have you tried so far?
+      placeholder: |
+        I'm trying to...
+        I've already tried...
+    validations:
+      required: false
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Code Example
+      description: Share relevant code (if applicable)
+      render: python
+      placeholder: |
+        # Your code here
+    validations:
+      required: false
+
+  - type: textarea
+    id: error
+    attributes:
+      label: Error Message
+      description: If you're getting an error, paste it here
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have read the documentation
+          required: false
+        - label: I have searched existing issues and discussions
+          required: true
