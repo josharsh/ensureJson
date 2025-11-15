@@ -1,0 +1,22 @@
+title: "Idea: "
+labels: ["idea", "discussion"]
+body: |
+  ## Your Idea
+
+  <!-- Share your idea for improving ensureJson -->
+
+  ## Use Case
+
+  <!-- What problem would this solve? Who would benefit? -->
+
+  ## Example
+
+  <!-- If applicable, show how this would work -->
+
+  ```python
+  # Example code
+  ```
+
+  ## Additional Context
+
+  <!-- Any other relevant information -->

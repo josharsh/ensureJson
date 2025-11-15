@@ -1,0 +1,106 @@
+name: Documentation Improvement
+description: Suggest improvements to documentation
+title: "[Docs]: "
+labels: ["documentation", "good first issue"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve our documentation! Clear docs are essential for a great developer experience.
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What kind of documentation needs improvement?
+      options:
+        - README
+        - API Documentation
+        - Code Comments
+        - Examples
+        - Tutorial/Guide
+        - FAQ
+        - CONTRIBUTING.md
+        - Architecture Documentation
+        - Troubleshooting
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package/Area
+      description: Which part of the project does this documentation relate to?
+      options:
+        - ensure-json (Python)
+        - ensure-json (JavaScript/TypeScript)
+        - Both packages
+        - General project documentation
+        - Contributing guidelines
+        - Examples
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What kind of documentation issue is this?
+      options:
+        - Missing documentation
+        - Incorrect/outdated documentation
+        - Unclear/confusing documentation
+        - Typo/grammar error
+        - Missing code example
+        - Formatting issue
+        - Translation needed
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Documentation
+      description: What does the current documentation say (if anything)?
+      placeholder: Copy the current text or link to the file
+    validations:
+      required: false
+
+  - type: textarea
+    id: improvement
+    attributes:
+      label: Suggested Improvement
+      description: What should the documentation say instead?
+      placeholder: Provide your suggested text, example, or explanation
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Why This Matters
+      description: Why is this documentation improvement important?
+      placeholder: |
+        - Helps new users understand...
+        - Prevents confusion about...
+        - Makes it easier to...
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other relevant information?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      options:
+        - label: I am willing to submit a PR to fix this documentation issue
+          required: false

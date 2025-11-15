@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/josharsh/ensureJson/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: Python Package (PyPI)
+    url: https://pypi.org/project/ensure-json/
+    about: View the ensure-json Python package on PyPI
+  - name: JavaScript Package (npm)
+    url: https://www.npmjs.com/package/ensure-json
+    about: View the ensure-json JavaScript package on npm
